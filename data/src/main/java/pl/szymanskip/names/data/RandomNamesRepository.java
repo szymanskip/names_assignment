@@ -3,6 +3,7 @@ package pl.szymanskip.names.data;
 import pl.szymanskip.names.data.remote.NameWs;
 import pl.szymanskip.names.data.remote.UiNamesService;
 import pl.szymanskip.names.domain.FullName;
+import pl.szymanskip.names.domain.Region;
 import pl.szymanskip.names.domain.repository.NamesRepository;
 import rx.Single;
 import rx.functions.Func1;
@@ -16,8 +17,8 @@ public class RandomNamesRepository implements NamesRepository {
   }
 
   @Override
-  public Single<FullName> getName(String region) {
-    return uiNamesService.getName(region)
+  public Single<FullName> getName(Region region) {
+    return uiNamesService.getName(region.getName())
         .map(new Func1<NameWs, FullName>() {
           @Override
           public FullName call(NameWs nameWs) {
