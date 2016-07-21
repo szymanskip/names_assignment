@@ -6,6 +6,6 @@ import rx.Single;
 
 public interface UiNamesService {
 
-  @GET("")
+  @GET("api")
   Single<NameWs> getName(@Query("region") String region);
 }
