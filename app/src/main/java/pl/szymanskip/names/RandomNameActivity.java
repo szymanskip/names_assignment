@@ -75,7 +75,7 @@ public class RandomNameActivity extends AppCompatActivity implements RandomNameV
         presenter.loadLocation();
       } else {
         new AlertDialog.Builder(this)
-            .setMessage("Application requires location permission to run.")
+            .setMessage(getString(R.string.message_requires_permission_dialog))
             .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
               @Override
               public void onClick(DialogInterface dialog, int which) {
@@ -114,7 +114,7 @@ public class RandomNameActivity extends AppCompatActivity implements RandomNameV
 
   @Override
   public void showWaitingForLocation() {
-    regionView.setText("Waiting for location");
+    regionView.setText(R.string.waiting_for_location);
     getNameButton.setEnabled(false);
   }
 

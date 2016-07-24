@@ -1,3 +1,5 @@
 <resources>
   <string name="app_name">Names</string>
+  <string name="waiting_for_location">Waiting for location</string>
+  <string name="message_requires_permission_dialog">Application requires location permission to run.</string>
 </resources>
