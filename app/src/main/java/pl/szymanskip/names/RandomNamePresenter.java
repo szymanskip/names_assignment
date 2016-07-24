@@ -1,5 +1,8 @@
 package pl.szymanskip.names;
 
+import android.util.Log;
+
+import pl.szymanskip.names.domain.ErrorHandler;
 import pl.szymanskip.names.domain.Name;
 import pl.szymanskip.names.domain.Region;
 import pl.szymanskip.names.domain.interactor.GetCurrentRegion;
@@ -7,22 +10,26 @@ import pl.szymanskip.names.domain.interactor.GetRandomName;
 import rx.Subscription;
 import rx.functions.Action1;
 
-public class RandomNamePresenter {
+class RandomNamePresenter {
+  private static final String TAG = "RandomNamePresenter";
 
   private final GetCurrentRegion getCurrentRegion;
   private final GetRandomName getRandomName;
+  private ErrorHandler errorHandler;
 
   private RandomNameView view;
 
   private Region cachedRegion = null;
   private Subscription locationSubscription;
 
-  public RandomNamePresenter(GetCurrentRegion getCurrentRegion, GetRandomName getRandomName) {
+  RandomNamePresenter(GetCurrentRegion getCurrentRegion, GetRandomName getRandomName,
+      ErrorHandler errorHandler) {
     this.getCurrentRegion = getCurrentRegion;
     this.getRandomName = getRandomName;
+    this.errorHandler = errorHandler;
   }
 
-  public void loadLocation() {
+  void loadLocation() {
     locationSubscription = getCurrentRegion.execute(null)
         .subscribe(new Action1<Region>() {
           @Override
@@ -35,13 +42,16 @@ public class RandomNamePresenter {
         }, new Action1<Throwable>() {
           @Override
           public void call(Throwable throwable) {
-            throwable.printStackTrace();
+            Log.e(TAG, "Error obtaining location", throwable);
+            if (view != null) {
+              view.showError(errorHandler.handle(throwable));
+            }
           }
         });
 
   }
 
-  public void attach(RandomNameView view) {
+  void attach(RandomNameView view) {
     this.view = view;
     this.view.showWaitingForLocation();
     if (cachedRegion != null) {
@@ -49,19 +59,23 @@ public class RandomNamePresenter {
     }
   }
 
-  public void detach() {
+  void detach() {
     this.view = null;
     if (locationSubscription != null && !locationSubscription.isUnsubscribed()) {
       locationSubscription.unsubscribe();
     }
   }
 
-  public void loadRandomName() {
+  void loadRandomName() {
+    if (view != null) {
+      view.showProgress();
+    }
     getRandomName.execute(cachedRegion)
         .subscribe(new Action1<Name>() {
           @Override
           public void call(Name name) {
             if (view != null) {
+              view.hideProgress();
               view.showRandomName(
                   new NameViewModel(name.getFullName(), name.isAnagramOfPalindrome()));
             }
@@ -69,7 +83,11 @@ public class RandomNamePresenter {
         }, new Action1<Throwable>() {
           @Override
           public void call(Throwable throwable) {
-            throwable.printStackTrace();
+            Log.e(TAG, "Error getting random name", throwable);
+            if (view != null) {
+              view.hideProgress();
+              view.showError(errorHandler.handle(throwable));
+            }
           }
         });
   }

@@ -20,6 +20,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import pl.szymanskip.names.di.AndroidComponent;
 import pl.szymanskip.names.di.DaggerNamesComponent;
+import pl.szymanskip.names.domain.ErrorHandler;
 import pl.szymanskip.names.domain.interactor.GetCurrentRegion;
 import pl.szymanskip.names.domain.interactor.GetRandomName;
 
@@ -33,6 +34,7 @@ public class RandomNameActivity extends AppCompatActivity implements RandomNameV
   @BindView(R.id.button_get_name) Button getNameButton;
   @Inject GetCurrentRegion getCurrentRegion;
   @Inject GetRandomName getRandomName;
+  @Inject ErrorHandler errorHandler;
 
   private RandomNamePresenter presenter;
 
@@ -48,7 +50,7 @@ public class RandomNameActivity extends AppCompatActivity implements RandomNameV
         .build()
         .inject(this);
 
-    presenter = new RandomNamePresenter(getCurrentRegion, getRandomName);
+    presenter = new RandomNamePresenter(getCurrentRegion, getRandomName, errorHandler);
 
     checkLocationPermissions();
   }

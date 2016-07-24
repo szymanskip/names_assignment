@@ -5,4 +5,6 @@
   <string name="get_name">Get name!</string>
   <string name="current_location">Current location: %s</string>
   <string name="loading_name">Loading name…</string>
+  <string name="no_internet">No internet connection</string>
+  <string name="not_available">Service temporarily unavailable.</string>
 </resources>
