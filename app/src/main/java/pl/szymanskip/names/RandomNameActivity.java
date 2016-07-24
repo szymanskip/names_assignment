@@ -12,21 +12,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.TextView;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
-import pl.szymanskip.names.data.DeviceRegionProvider;
-import pl.szymanskip.names.data.RemoteNamesRepository;
-import pl.szymanskip.names.data.remote.UiNamesService;
-import pl.szymanskip.names.domain.RegionProvider;
+import pl.szymanskip.names.di.AndroidComponent;
+import pl.szymanskip.names.di.DaggerNamesComponent;
 import pl.szymanskip.names.domain.interactor.GetCurrentRegion;
 import pl.szymanskip.names.domain.interactor.GetRandomName;
-import pl.szymanskip.names.domain.repository.NamesRepository;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 import static pl.szymanskip.names.R.id.region;
 
@@ -36,6 +30,8 @@ public class RandomNameActivity extends AppCompatActivity implements RandomNameV
   @BindView(region) TextView regionView;
   @BindView(R.id.name) TextView nameView;
   @BindView(R.id.button_get_name) Button getNameButton;
+  @Inject GetCurrentRegion getCurrentRegion;
+  @Inject GetRandomName getRandomName;
 
   private RandomNamePresenter presenter;
 
@@ -45,23 +41,12 @@ public class RandomNameActivity extends AppCompatActivity implements RandomNameV
     setContentView(R.layout.activity_random_name);
     ButterKnife.bind(this);
 
-    RegionProvider regionProvider = new DeviceRegionProvider(getApplicationContext());
-    GetCurrentRegion getCurrentRegion = new GetCurrentRegion(regionProvider);
+    AndroidComponent androidComponent = ((NamesApplication) getApplication()).getAndroidComponent();
+    DaggerNamesComponent.builder()
+        .androidComponent(androidComponent)
+        .build()
+        .inject(this);
 
-    HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-    interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-    OkHttpClient okHttpClient = new OkHttpClient.Builder()
-        .addNetworkInterceptor(interceptor)
-        .build();
-    Retrofit retrofit = new Retrofit.Builder()
-        .baseUrl("http://uinames.com/")
-        .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-        .addConverterFactory(GsonConverterFactory.create())
-        .client(okHttpClient)
-        .build();
-    UiNamesService uiNamesService = retrofit.create(UiNamesService.class);
-    NamesRepository namesRepository = new RemoteNamesRepository(uiNamesService);
-    GetRandomName getRandomName = new GetRandomName(namesRepository);
     presenter = new RandomNamePresenter(getCurrentRegion, getRandomName);
 
     checkLocationPermissions();
