@@ -1,23 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools"
+                                             android:id="@+id/constraintLayout"
+                                             android:orientation="vertical"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
   >
 
   <TextView
     android:id="@+id/region"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_marginEnd="16dp"
+    android:layout_marginTop="16dp"
+    android:textAppearance="?android:textAppearanceSmall"
+    app:layout_constraintRight_toRightOf="@+id/constraintLayout"
+    app:layout_constraintTop_toTopOf="@+id/constraintLayout"
+    tools:text="Current location: Poland"
     />
   <TextView
     android:id="@+id/name"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginStart="16dp"
+    android:textAppearance="?android:textAppearanceLarge"
+    android:textSize="24sp"
+    app:layout_constraintBottom_toTopOf="@+id/button_get_name"
+    app:layout_constraintLeft_toLeftOf="@+id/constraintLayout"
+    app:layout_constraintRight_toRightOf="@+id/constraintLayout"
+    tools:text="Pawel Szymanski"
     />
   <Button
     android:id="@+id/button_get_name"
+    style="@style/Widget.AppCompat.Button.Borderless"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginTop="16dp"
+    android:text="@string/get_name"
+    app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
+    app:layout_constraintLeft_toLeftOf="@+id/constraintLayout"
+    app:layout_constraintRight_toRightOf="@+id/constraintLayout"
+    app:layout_constraintTop_toTopOf="@+id/constraintLayout"
     />
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

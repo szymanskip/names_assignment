@@ -10,4 +10,6 @@ public interface RandomNameView {
   void hideProgress();
 
   void showRandomName(NameViewModel nameViewModel);
+
+  void showError(String message);
 }
