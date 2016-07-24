@@ -10,6 +10,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -145,5 +146,16 @@ public class RandomNameActivity extends AppCompatActivity implements RandomNameV
   @Override
   public void showError(String message) {
     Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).show();
+  }
+
+  @Override
+  public void showSpecialName(String firstName) {
+    //noinspection deprecation
+    new AlertDialog.Builder(this)
+        .setTitle(R.string.dialog_title)
+        .setMessage(Html.fromHtml(getString(R.string.dialog_message, firstName)))
+        .setPositiveButton(android.R.string.ok, null)
+        .setCancelable(true)
+        .show();
   }
 }

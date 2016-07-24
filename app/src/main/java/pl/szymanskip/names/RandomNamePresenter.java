@@ -76,8 +76,10 @@ class RandomNamePresenter {
           public void call(Name name) {
             if (view != null) {
               view.hideProgress();
-              view.showRandomName(
-                  new NameViewModel(name.getFullName(), name.isAnagramOfPalindrome()));
+              view.showRandomName(new NameViewModel(name.getFullName()));
+              if (name.isAnagramOfPalindrome()) {
+                view.showSpecialName(name.getFirstName());
+              }
             }
           }
         }, new Action1<Throwable>() {

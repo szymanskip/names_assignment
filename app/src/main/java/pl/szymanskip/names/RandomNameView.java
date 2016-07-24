@@ -12,4 +12,6 @@ public interface RandomNameView {
   void showRandomName(NameViewModel nameViewModel);
 
   void showError(String message);
+
+  void showSpecialName(String firstName);
 }

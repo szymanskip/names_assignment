@@ -7,4 +7,8 @@
   <string name="loading_name">Loading name…</string>
   <string name="no_internet">No internet connection</string>
   <string name="not_available">Service temporarily unavailable.</string>
+  <string name="dialog_title">Congrats!</string>
+  <string name="dialog_message"><![CDATA[
+Well well. It seems that the name <b>%s</b> is special! It\'s an anagram of palindrome!
+  ]]></string>
 </resources>
