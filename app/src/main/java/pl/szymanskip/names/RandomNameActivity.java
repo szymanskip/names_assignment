@@ -131,21 +131,25 @@ public class RandomNameActivity extends AppCompatActivity implements RandomNameV
   @Override
   public void showProgress() {
     nameView.setText(R.string.loading_name);
+    getNameButton.setEnabled(false);
   }
 
   @Override
   public void hideProgress() {
     nameView.setText("");
+    getNameButton.setEnabled(true);
   }
 
   @Override
   public void showRandomName(NameViewModel nameViewModel) {
     nameView.setText(nameViewModel.getFullName());
+    getNameButton.setEnabled(true);
   }
 
   @Override
   public void showError(String message) {
     Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).show();
+    getNameButton.setEnabled(true);
   }
 
   @Override
